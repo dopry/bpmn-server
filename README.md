@@ -4,7 +4,9 @@ bpmn-server
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 
 ## Introduction
-BPMN 2.0 Modeling, Execution and Presistence, an open source Workflow Server for Node.js 
+BPMN 2.0 Modeling, Execution and Presistence, an open source Workflow Server for Node.js
+
+This package does not provide a web interface to the server. See the bpmn-server-web for a more complete web enabled version.
 
 This package is designed specifically for Node.js and TypeScript
 
@@ -14,16 +16,12 @@ This package is designed specifically for Node.js and TypeScript
 - [Examples](./docs/examples.md)
 
 ## Features
-### Web based Process modeller
-
-A web based modeler is included based on http://bpmn.io , models definitions are saved at your server
-![Modeller](./docs/model-demo.gif)
 
 ### Full BPMN Process Engine
 
 bpmn-server provides an bpmnEngine to execute your workflow definition supporting all of BPMN 2.0 elements with advanced extensions
 
-bpmn-server is highly scalable solution, allow you to run multiple nodeJS either in same machine or in a distributed mode against same MongoDB 
+bpmn-server is highly scalable solution, allow you to run multiple nodeJS either in same machine or in a distributed mode against same MongoDB
 
 ### Presistent Processes
 
@@ -31,69 +29,9 @@ provides an environment to presist execution Instances while running and communi
 
 Applications can monitor and communicate to Instances whether they are running or offline, allowing user interface to query and process Workflow steps
 
-### Data Queries 
+### Data Queries
 
 Since instances are saved in MongoDB you can easily query your instances (running or completed)
-
-### Sample Web App
-
-Included is a sample web application (running Node.js and Express.js) to allow you to visualize your workflow 
-
-# Installation
-
-This package requires Node.js and an access to MongoDB ()
-if you don't have MongoDB already installed you can [create a free cloud account here](http://bit.ly/cyd-atlas)
-
-```javascript
-$ mkdir myBPMN
-
-$ cd myBPMN
-
-$ npm install bpmn-server
-```
-Copy demo app into local folder
-```
-$ cp node_modules/bpmn-server/WebApp/. ./  -r
-
-Windows: 
-xcopy /e /i /s /y node_modules\bpmn-server\WebApp\*.* .
-```
-Edit .env file to have MongoDB point to your server or free cloud account
-```javascript
-API_KEY=12345
-MONGO_DB_URL=mongodb://0.0.0.0:27017/bpmn <---- point to your MONGODB
-MONGO_DB_NAME=bpmn
-DEFINITIONS_PATH="./processes/"
-SESSION_SECRET=omni-secret
-SERVER_ID=PRIMARY
-```
-
-Run database setup
-```
-node setup.js
-```
-## To start server
-```
-npm run start
-```
-Console will display:
-```text 
-bpmn-server WebApp.ts version 1.4.0
-MongoDB URL mongodb://0.0.0.0:27017/bpmn
-db connection open
-
-App is running at http://localhost:3000 in development mode
-  Press CTRL-C to stop
-
-```
-Use your browser to view the bpmn-server running
-
-## to update to latest release
-
-```
-$ npm update bpmn-server
-```
-# Full Demo
 
 a full demo site is available @ http://bpmn.omniworkflow.com
 
@@ -127,12 +65,11 @@ a full demo site is available @ http://bpmn.omniworkflow.com
 ```
 for more complete examples see [Examples](./docs/examples.md)
 
-# License 
+# License
 
 This project is licensed under the terms of the MIT license.
 
 # Acknowledgments
 
 The **bpmn-server** resides upon the excellent library [bpmn-io/bpmn-moddle](https://github.com/bpmn-io/bpmn-moddle) developed by [bpmn.io](http://bpmn.io/)
-
-The **bpmn-server** is inspired by the library [bpmn-engine](https://github.com/paed01/bpmn-engine) 
+The **bpmn-server** is inspired by the library [bpmn-engine](https://github.com/paed01/bpmn-engine)

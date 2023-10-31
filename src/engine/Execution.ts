@@ -5,8 +5,8 @@ import { Item } from './Item';
 import { Token, TOKEN_TYPE  } from './Token';
 import { Loop} from './Loop';
 import { Element, Node, Flow , Definition, CallActivity, Process } from '../elements/'
-import { EXECUTION_EVENT, NODE_ACTION, FLOW_ACTION, TOKEN_STATUS, EXECUTION_STATUS, ITEM_STATUS, IDefinition } from '../../';
-import { IInstanceData, IBPMNServer, IExecution, IAppDelegate , DefaultAppDelegate } from '../../';
+import { EXECUTION_EVENT, NODE_ACTION, FLOW_ACTION, TOKEN_STATUS, EXECUTION_STATUS, ITEM_STATUS, IDefinition } from '..';
+import { IInstanceData, IBPMNServer, IExecution, IAppDelegate , DefaultAppDelegate } from '..';
 import { EventEmitter } from 'events';
 import { BPMNServer, ServerComponent } from '../server';
 import { InstanceObject } from './Model';
@@ -18,7 +18,7 @@ var execution_seq = 0;
 /**
  *  is accessed two ways:
  *      execute - start process
- *      signal  - invoke a node (userTask, event, etc.) 
+ *      signal  - invoke a node (userTask, event, etc.)
  * */
 // ---------------------------------------------
 
@@ -45,7 +45,7 @@ class Execution extends ServerComponent implements IExecution {
         const res = await this.worker;
         return this;
     }
-    
+
     // end move from ExecutionContext;
     get listener() {
         return this.server.listener;
@@ -53,7 +53,7 @@ class Execution extends ServerComponent implements IExecution {
 
 
     /**
-     * 
+     *
      * @param name          process name
      * @param source        bpmn source
      */
@@ -70,7 +70,7 @@ class Execution extends ServerComponent implements IExecution {
         else
             this.instance = state;
 
-        
+
         this.definition = new Definition(name, source, this.server);
 
     }
@@ -98,7 +98,7 @@ class Execution extends ServerComponent implements IExecution {
         await this.doExecutionEvent(this.process,EXECUTION_EVENT.process_end);
     }
     /**
-     * 
+     *
      * causes the execution to stop from running any further
      * */
     terminate() {
@@ -108,7 +108,7 @@ class Execution extends ServerComponent implements IExecution {
 
     }
     /**
-     * 
+     *
      * causes the execution to stop from running any further
      * */
     stop() {
@@ -126,7 +126,7 @@ class Execution extends ServerComponent implements IExecution {
         this.instance.status = EXECUTION_STATUS.running;
         this.appDelegate.executionStarted(this);
 
-        
+
         if (inputData)
             this.instance.data = Object.assign({}, inputData);
         else
@@ -173,7 +173,7 @@ class Execution extends ServerComponent implements IExecution {
     /**
      * @param executionId
      * @param inputData
-     * 
+     *
      */
     public async assign(executionId, inputData:any,userId: string = null, assignment = {}) {
 
@@ -195,15 +195,15 @@ class Execution extends ServerComponent implements IExecution {
         this.log('Execution('+this.name+').assign: finished!');
     }
     /**
-     * 
+     *
      * invoke scenarios:
      *      itemId
      *      elementId   - but only one is active
      *      elementId   - for a startEvent in a secondary process
-     *      
+     *
      * @param executionId
      * @param inputData
-     * 
+     *
      */
     public async signal(executionId, inputData:any,options={}) {
 
@@ -252,7 +252,7 @@ class Execution extends ServerComponent implements IExecution {
             if (node) {
                 let token = await Token.startNewToken(TOKEN_TYPE.Primary,this, node, null, null, null, inputData);
             }
-            else { //Error 
+            else { //Error
                 this.getItems().forEach(i => {
                     if (i.id==executionId)
                     {
@@ -282,9 +282,9 @@ class Execution extends ServerComponent implements IExecution {
     async save() {
         // save here :
         this.log(`..Saving instance ${this.instance.id}`+JSON.stringify(this.instance.data));
-        
+
         const state = this.getState();
-    
+
         this['state']=state;
 
         await this.doExecutionEvent(this,EXECUTION_EVENT.process_saving);
@@ -300,7 +300,7 @@ class Execution extends ServerComponent implements IExecution {
             })
         }
         );
-        
+
         return items.sort(function (a, b) { return (a.seq - b.seq); });
     }
     getItemsData() {
@@ -308,7 +308,7 @@ class Execution extends ServerComponent implements IExecution {
         this.getItems().forEach(item => { items.push(item.save()); });
         return items;
     }
-    /* 
+    /*
      * return the execution State as a Json object
      * to be saved for retrieval later and used in restore
      */
@@ -331,7 +331,7 @@ class Execution extends ServerComponent implements IExecution {
         this.instance.loops = loops;
         this.instance.tokens = tokens;
 
-        
+
         return this.instance;
     }
     /**
@@ -377,7 +377,7 @@ class Execution extends ServerComponent implements IExecution {
             const item = Item.load(execution, i, token);
             token.path.push(item);
             items.push(item);
-            }); 
+            });
 
         // token.originItem
 
@@ -452,7 +452,7 @@ class Execution extends ServerComponent implements IExecution {
 
     getUUID() {
 
-        return uuidv4(); // -> '6c84fb90-12c4-11e1-840d-7b25c5ee775a' 
+        return uuidv4(); // -> '6c84fb90-12c4-11e1-840d-7b25c5ee775a'
 
     }
 
@@ -475,7 +475,7 @@ class Execution extends ServerComponent implements IExecution {
         this.instance.logs.push(msg);
         this.logger.error(msg);
     }
-    // Data Handling 
+    // Data Handling
     /*
      * renamed from applyInput to appendData
      */
@@ -530,9 +530,9 @@ class Execution extends ServerComponent implements IExecution {
                 if (de != '') {
                     de = de.replace('[]', '');
                     if (!target[de]) {
-                        if (asArray) 
+                        if (asArray)
                                 target[de] = [];
-                        else 
+                        else
                                 target[de] = {};
                     }
                     target = target[de];

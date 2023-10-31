@@ -1,14 +1,14 @@
 import { Execution } from "./Execution";
-import { ITEM_STATUS, IItem, } from "../../";
-import { IItemData } from "../../";
+import { ITEM_STATUS, IItem, } from "..";
+import { IItemData } from "..";
 import { Element , Node } from '../elements';
 import { Token } from "./Token";
 
 class Item implements IItem {
-    id;                 
+    id;
     itemKey: string;
-    element: Element;   
-    token : Token;      
+    element: Element;
+    token : Token;
     seq;
     userId;
     startedAt;              // dateTime Started
@@ -23,11 +23,11 @@ class Item implements IItem {
     dueDate;
     followUpDate;
     priority;
-    
+
 
     get endedAt() {         // dateTime ended
         return this._endedAt;
-    }   
+    }
     set endedAt(val) {
         this._endedAt = val;
         if (this._dbAction == null)
@@ -107,7 +107,7 @@ class Item implements IItem {
         item.startedAt = dataObject.startedAt;
         item.endedAt = dataObject.endedAt;
         item.timeDue = dataObject.timeDue;
-        
+
         item.assignee= dataObject.assignee;
         item.candidateGroups=dataObject.candidateGroups;
         item.candidateUsers=dataObject.candidateUsers;

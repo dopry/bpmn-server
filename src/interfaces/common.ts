@@ -1,7 +1,7 @@
-import { IExecution, IItem, NODE_ACTION, FLOW_ACTION, IModelsDatastore, IDataStore,ICacheManager} from '../..';
+import { IExecution, IItem, NODE_ACTION, FLOW_ACTION, IModelsDatastore, IDataStore,ICacheManager} from '..';
 
 
-interface IConfiguration 
+interface IConfiguration
 {
     definitionsPath: string,
     templatesPath: string,
@@ -27,17 +27,17 @@ interface IConfiguration
 
 /**
  * A logging tool to take various message for monitoring and debugging
- * 
+ *
  * it can also keep the message in memory till saved later through saveToFile
  * msgs can be cleared by the clean method
- * 
+ *
  * */
 interface ILogger {
     /**
-     * 
-     * @param toConsole boolean 
+     *
+     * @param toConsole boolean
      *  writes to the output console
-     * @param toFile string 
+     * @param toFile string
      * writes to file
      *
      */
@@ -57,12 +57,12 @@ interface ILogger {
 }
 /**
  *  Application Delegate Object to respond to various events and services:
- *  
+ *
  *  1.  receive all events from workflow
  *  2.  receive service calls
- *  3.  receive message and signal calls 
- *  4.  execute scripts 
- *  
+ *  3.  receive message and signal calls
+ *  4.  execute scripts
+ *
  * */
 interface IAppDelegate {
     moddleOptions;
@@ -73,9 +73,9 @@ interface IAppDelegate {
     messageThrown(signalId, data, messageMatchingKey: any, item: IItem);
     signalThrown(signalId, data, messageMatchingKey: any, item: IItem);
     /**
-     * 
+     *
      * is called when an event throws a message that can not be answered by another process
-     * 
+     *
      * @param messageId
      * @param data
      */
@@ -83,7 +83,7 @@ interface IAppDelegate {
     issueSignal(messageId, data);
     /**
      * is called only if the serviceTask has no implementation; otherwise the specified implementation will be called.
-     * 
+     *
      * @param item
      */
     serviceCalled(serviceName,data,item: IItem);

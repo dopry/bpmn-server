@@ -2,7 +2,7 @@
 import { Execution } from '../engine/Execution';
 import { Token, TOKEN_TYPE } from '../engine/Token';
 import { IBehaviour, Behaviour} from "./behaviours";
-import { NODE_ACTION, FLOW_ACTION, EXECUTION_EVENT, TOKEN_STATUS, ITEM_STATUS, IFlow } from '../../';
+import { NODE_ACTION, FLOW_ACTION, EXECUTION_EVENT, TOKEN_STATUS, ITEM_STATUS, IFlow } from '..';
 
 import { Item } from '../engine/Item';
 import { Node, Element } from '.';
@@ -34,10 +34,10 @@ class Flow extends Element implements IFlow {
             super.describe();
     }
     /**
-     * 
+     *
      * <Rule> if flow has a condition, it must be evaluated and if result is true flow will continue
      *  otherwise, flow will be discarded.
-     * </Rule> 
+     * </Rule>
      * @param item
      */
     run(item: Item) {
@@ -69,7 +69,7 @@ class Flow extends Element implements IFlow {
 }
 // ---------------------------------------------
 /**
-* 
+*
 * <Rule>MessageFlow: can only be sent to active node in waiting
  * or to a start event
 * </Rule>

@@ -1,16 +1,16 @@
 import { Behaviour } from '.';
-import { Item } from "../../..";
+import { Item } from "../..";
 
 class ScriptBehaviour extends Behaviour {
-    /*    
+    /*
      *    old:
      *    <bpmn:extensionElements>
             <camunda:script event="start">
               console.log("This is the start event");
             </camunda:script>
           </bpmn:extensionElements>
-          
-          
+
+
           New:
 
       <bpmn2:extensionElements>

@@ -1,4 +1,4 @@
-import { IExecution, Item, NODE_ACTION, FLOW_ACTION, IAppDelegate , IDefinition} from "../..";
+import { IExecution, Item, NODE_ACTION, FLOW_ACTION, IAppDelegate , IDefinition} from "..";
 
 import { moddleOptions} from '../elements/js-bpmn-moddle';
 
@@ -35,7 +35,7 @@ class DefaultAppDelegate implements IAppDelegate {
     }
     /**
      *  is called when a event throws a message
-     * 
+     *
      * @param messageId
      * @param data
      * @param messageMatchingKey
@@ -53,9 +53,9 @@ class DefaultAppDelegate implements IAppDelegate {
             await this.issueMessage(messageId, data);
     }
     /**
-     * 
+     *
      * is called when an event throws a message that can not be answered by another process
-     * 
+     *
      * @param messageId
      * @param data
      */

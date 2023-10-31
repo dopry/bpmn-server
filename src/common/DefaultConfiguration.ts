@@ -2,8 +2,8 @@
 import { ModelsDatastore } from '../datastore/ModelsDatastore';
 import { DefaultAppDelegate } from '../engine/DefaultAppDelegate';
 
-import { IConfiguration, DataStore, NoCacheManager,ILogger, IModelsDatastore, 
-		IAppDelegate, IDataStore } from '../..';
+import { IConfiguration, DataStore, NoCacheManager,ILogger, IModelsDatastore,
+		IAppDelegate, IDataStore } from '..';
 import { Logger } from './'
 
 let definitionsPath = __dirname + '/processes/';
@@ -12,15 +12,15 @@ class Configuration implements IConfiguration {
 	definitionsPath: string;
 	templatesPath: string;
 	timers: { forceTimersDelay: number; precision: number; };
-	database: { 
-		MongoDB: { db_url: string; db: string; }; 
+	database: {
+		MongoDB: { db_url: string; db: string; };
 		loopbackRepositories?:any;
 	};
 	logger: ILogger;
 	apiKey: string;
 	sendGridAPIKey: string;
 	definitions(server) {
-		return new ModelsDatastore(server); 
+		return new ModelsDatastore(server);
 	}
 	appDelegate(server) :IAppDelegate {
 		return new DefaultAppDelegate(server);

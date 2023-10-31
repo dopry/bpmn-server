@@ -1,7 +1,7 @@
 import { TimerBehaviour, CamundaFormData, IOBehaviour, MessageEventBehaviour, SignalEventBehaviour, TerminateBehaviour, LoopBehaviour } from ".";
 import  type { Node } from "..";
 import type { Item } from "../../engine/Item";
-import { IItem } from "../../..";
+import { IItem } from "../..";
 import { ScriptBehaviour } from "./Script";
 
 
@@ -12,7 +12,7 @@ const toSeconds = duration.toSeconds;
 
 /** Behaviour
  *      ioSpecification
- *      timer 
+ *      timer
  *      message
  *      signal
  *

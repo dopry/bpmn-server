@@ -1,6 +1,6 @@
 import { Node } from ".";
 import { Behaviour_names } from "./behaviours";
-import { NODE_ACTION } from "../../";
+import { NODE_ACTION } from "..";
 import { Item } from "../engine/Item";
 import { ITEM_STATUS } from "../interfaces";
 
@@ -16,9 +16,9 @@ class Event extends Node {
         return this.getBehaviour(Behaviour_names.TimerEventDefinition);
     }
     /**
-     * 
+     *
      * 	using token: check if fromEventBasedGateway;	if yes cancel all other events
-     * 	
+     *
      * @param item
      */
     async start(item: Item): Promise<NODE_ACTION> {
@@ -35,10 +35,10 @@ class Event extends Node {
 
 class CatchEvent extends Event {
 
-    get isCatching(): boolean { return true; } 
+    get isCatching(): boolean { return true; }
 
     get requiresWait() {
-        return true; // return this.hasMessage(); 
+        return true; // return this.hasMessage();
     }
     get canBeInvoked() {
         return true; // return this.hasMessage();
@@ -50,7 +50,7 @@ class CatchEvent extends Event {
 }
 class BoundaryEvent extends Event {
 
-    get isCatching(): boolean { return true; } 
+    get isCatching(): boolean { return true; }
 
     isCancelling: boolean;
     constructor(id, process, type, def) {
@@ -62,10 +62,10 @@ class BoundaryEvent extends Event {
 
     }
     get requiresWait() {
-        return true; 
+        return true;
     }
     get canBeInvoked() {
-        return true; 
+        return true;
     }
 
     async start(item: Item): Promise<NODE_ACTION> {
@@ -91,11 +91,11 @@ class BoundaryEvent extends Event {
 class ThrowEvent extends Event {
 
     /**
-     * 
+     *
      * 	using token: check if fromEventBasedGateway;	if yes cancel all other events
      */
 
-    get isCatching(): boolean { return false; } 
+    get isCatching(): boolean { return false; }
 
     async start(item: Item): Promise<NODE_ACTION> {
         return await super.start(item);
@@ -108,7 +108,7 @@ class ThrowEvent extends Event {
 
 class EndEvent extends Event {
 
-    get isCatching(): boolean { return false; } 
+    get isCatching(): boolean { return false; }
     end(item: Item) {
         return super.end(item);
     }

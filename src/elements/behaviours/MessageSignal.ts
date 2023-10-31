@@ -2,12 +2,12 @@ import type { TimerBehaviour } from ".";
 import type { Node } from "..";
 import { Behaviour } from '.';
 import { Item } from "../../engine/Item";
-import { NODE_SUBTYPE } from "../../..";
+import { NODE_SUBTYPE } from "../..";
 /**
- * 
- * 
+ *
+ *
  * it is part of the following:
- * 
+ *
  *  events
  *  sendTask
  *  receiveTask
@@ -40,7 +40,7 @@ class MessageEventBehaviour extends Behaviour {
             return this.definition['messageRef']['name'];
     }
     describe() {
-        if (this.node.isCatching) 
+        if (this.node.isCatching)
             return ['Message', `catches message '${this.messageId}'`];
         else
             return ['Message', `throws message '${this.messageId}'`];

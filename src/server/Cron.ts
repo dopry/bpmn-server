@@ -3,7 +3,7 @@ import { Logger } from '../common/Logger';
 
 import { ServerComponent } from './ServerComponent';
 
-import { IEventData, ICron } from '../..';
+import { IEventData, ICron } from '..';
 
 const duration = require('iso8601-duration');
 const parse = duration.parse;
@@ -60,10 +60,10 @@ class Cron  extends ServerComponent implements ICron {
 				}
 			}
 
-			// { "items.timeDue": { $lt: new ISODate("2020-06-14T19:44:38.541Z") } }	
+			// { "items.timeDue": { $lt: new ISODate("2020-06-14T19:44:38.541Z") } }
 			// query = { "items.timeDue": { $lt: target } };
 			query = { "items.timeDue": { $exists: true }, "items.status": "wait" };
-			
+
 			//query = { query: { "items.timeDue": { $lt: new Date(target).toISOString() } } };
 			//query = { items: {timeDue: { $lt: new Date(target).toISOString() } }};
 			list = await this.dataStore.findItems(query);
@@ -88,7 +88,7 @@ class Cron  extends ServerComponent implements ICron {
 
 	private async itemTimerExpired() {
 		const entry: any = this as any;
-			await entry.cron.engine.invoke({ "items.id": entry.id }, null); 
+			await entry.cron.engine.invoke({ "items.id": entry.id }, null);
 	}
 	private async processTimerExpired() {
 		const params: any = this as any;
@@ -110,7 +110,7 @@ class Cron  extends ServerComponent implements ICron {
 			console.log("scheduling process " + entry.modelName + " delayed by " + delay + " seconds, scheduled at: " + scheduleAt );
 			if (delay < 0)
 				setTimeout(this.processTimerExpired.bind({ entry, cron: this }), 100);
-			else 
+			else
 				setTimeout(this.processTimerExpired.bind({ entry, cron: this }), delay * 1000);
 
         }
@@ -141,7 +141,7 @@ class Cron  extends ServerComponent implements ICron {
 			return delay;
 		} catch (err) {
 			return null;
-		} 
+		}
 
     }
 	static timeDue(expression,referenceDateTime) {
@@ -161,7 +161,7 @@ class Cron  extends ServerComponent implements ICron {
 					delay = toSeconds(parse(expression));
 					if (referenceDateTime) {
 						delay += (referenceDateTime - now) / 1000;
-					} 
+					}
 					console.log(" expression " + expression + " base date" + baseDate + " -> delay of " + delay + " sec " + delay / 60 + " min" + delay / 3600 + " hours ");
 				}
 			}

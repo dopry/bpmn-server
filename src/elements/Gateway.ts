@@ -2,7 +2,7 @@
 import { Execution } from '../engine/Execution';
 import { Token, TOKEN_TYPE } from '../engine/Token';
 import { IBehaviour, Behaviour } from "./behaviours";
-import { NODE_ACTION, FLOW_ACTION, EXECUTION_EVENT, TOKEN_STATUS, ITEM_STATUS } from '../../';
+import { NODE_ACTION, FLOW_ACTION, EXECUTION_EVENT, TOKEN_STATUS, ITEM_STATUS } from '..';
 import { BPMN_TYPE, Node } from '.';
 import { Item } from '../engine/Item';
 
@@ -15,18 +15,18 @@ import { Item } from '../engine/Item';
  *  1.  multi potential inbounds
  *  2.  how many tokens are active that branched off from the corresponding gateway:
  *      a) find the corresponding gateway??
- *            
+ *
  *      b) check all brnaches that passed through this gateway
  *      c) check if any still active (other than the calling one)
- *      
+ *
  *  Using the calling token: is a child , did it branch from a gateway - take it
  *              did it have a child branching from the gateway
- *              
+ *
  */
 class Gateway extends Node {
 
     /**
-      * 
+      *
       * @param item
       */
     /*  rule: DefaultFlow will only fire if no other flows are valid
@@ -62,7 +62,7 @@ class Gateway extends Node {
 
     /// Returns a list of node_ids of all potential (future) path for a given node
     getPotentialPath(node,path=null)  {
-        if (path==null) 
+        if (path==null)
             path=new Map();
         for (var i = 0; i < node.outbounds.length; i++) {
             let flow = node.outbounds[i];
@@ -98,7 +98,7 @@ class Gateway extends Node {
                 {p+=''+token.path[i].node.id+'->'; }
             ex.log(`        ..token: ${token.id} - ${token.status} - ${token.type} current: ${token.currentNode.id} from ${branch} child of ${parent} path: ${p} ` );
 
-            if (token.currentItem) 
+            if (token.currentItem)
             {
                 if ( (token.id != item.token.id) &&
                     (token.currentItem.status != ITEM_STATUS.end && token.currentItem.status != ITEM_STATUS.terminated)) {
@@ -139,7 +139,7 @@ class Gateway extends Node {
             token.log('Gateway(' +item.element.name+'|'+item.element.id +  ').convergeFlows: ... waitingTokens token id:' + t.id + ' currentNode.id:' + t.currentNode.id);
         });
         token.log('Gateway(' +item.element.name+'|'+item.element.id + ').convergeFlows: '
-            +'  pendingTokens:' + pendingTokens.length 
+            +'  pendingTokens:' + pendingTokens.length
             +'  waitingTokens:' + waitingTokens.length );
 
         return { pendingTokens, waitingTokens};
@@ -184,7 +184,7 @@ class Gateway extends Node {
                     //await t.terminate();
                 });
 
-                
+
                 // -------------------------------------------------------------------------------------------------
                 // Create a new Token at converging  gateway
                 // -------------------------------------------------------------------------------------------------
@@ -210,8 +210,8 @@ class Gateway extends Node {
                     let result = await parentToken.currentNode.continue(item);
                     result = await parentToken.goNext();
                 }
-                
-                            
+
+
                 // -------------------------------------------------------------------------------------------------
                 // end current token
                 // -------------------------------------------------------------------------------------------------
@@ -222,7 +222,7 @@ class Gateway extends Node {
 
                 //if (oldCurrentToken.type==TOKEN_TYPE.Diverge)
                     await oldCurrentToken.terminate();
-                
+
 
                 item.token.log('Gateway(' + item.element.name+'|'+item.element.id +  ').start: all token terminate return NODE_ACTION.end');
                 return NODE_ACTION.end;
@@ -232,13 +232,13 @@ class Gateway extends Node {
             return NODE_ACTION.continue;
     }
 
-    
+
 }
 
 /**
  *  ExclusiveGatway:
- *      outbounds:  only 1 
- *      inbound:    only 1 - 
+ *      outbounds:  only 1
+ *      inbound:    only 1 -
  * */
 class XORGateway extends Gateway {
 
@@ -258,7 +258,7 @@ class XORGateway extends Gateway {
 }
 /**
  * trick here is once one event is met all others must be cancelled
- * 
+ *
  * How will I know?
  *      when one of my events is fired shoudl I subscribe to the event or get directly notified?
  * */

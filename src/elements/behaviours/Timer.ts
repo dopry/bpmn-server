@@ -1,7 +1,7 @@
 
 import { Token, Execution, TOKEN_TYPE  } from '../../engine';
 import { Node } from '..';
-import { NODE_ACTION, FLOW_ACTION, EXECUTION_EVENT, TOKEN_STATUS, ITEM_STATUS } from '../../..';
+import { NODE_ACTION, FLOW_ACTION, EXECUTION_EVENT, TOKEN_STATUS, ITEM_STATUS } from '../..';
 import { Item } from '../../engine/Item';
 import { BPMNServer } from '../../server';
 import { Behaviour } from './';
@@ -12,9 +12,9 @@ import { NODE_SUBTYPE } from '../../interfaces';
 /*
  * will fire a timer at start and go into wait sleep
  * timer will later invoke the item when due
- * 
  *
- * 
+ *
+ *
  *  <timerEventDefinition>
         <timeDate>2011-03-11T12:13:14Z</timeDate>
     </timerEventDefinition>
@@ -42,7 +42,7 @@ Item Attributes:
     item.timeDue
     -- only for repeated timers --
 
-    item.timerCount     - count of completed timers 
+    item.timerCount     - count of completed timers
 
  */
 class TimerBehaviour extends Behaviour {
@@ -137,7 +137,7 @@ class TimerBehaviour extends Behaviour {
     async expires() {
         let item = this['item'] as unknown as Item;
         let timer = this['timer'];
-     
+
         item.timerCount++;
         const exec=item.token.execution;
         item.token.log("Action:---timer Expired --- lock:"+exec.isLocked+" seq:"+exec.seq);
@@ -148,7 +148,7 @@ class TimerBehaviour extends Behaviour {
             if (exec.isLocked===true)
                 await exec.signal(item.id, {});
             else
-    			await exec.server.engine.invoke({ "items.id": item.id }, null); 
+    			await exec.server.engine.invoke({ "items.id": item.id }, null);
 
         }
         // check for repeat
@@ -156,7 +156,7 @@ class TimerBehaviour extends Behaviour {
             let newToken=await Token.startNewToken(TOKEN_TYPE.BoundaryEvent, item.token.execution, item.node, null, item.token, item, null);
             let newItem = newToken.currentItem;
             item.token.log('new token for timer repeat ' + item.timerCount + '  '+newItem.elementId);
-            newItem.timerCount = item.timerCount;     
+            newItem.timerCount = item.timerCount;
 
             //await timer.startTimer(new);
         }

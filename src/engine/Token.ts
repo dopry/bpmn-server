@@ -4,7 +4,7 @@ const fs = require('fs');
 
 import { Execution } from './Execution';
 import { SubProcess ,  LoopBehaviour , Element, Node, Flow } from '../elements/'
-import { EXECUTION_EVENT , NODE_ACTION , FLOW_ACTION, TOKEN_STATUS, EXECUTION_STATUS,  ITEM_STATUS, INode, NODE_SUBTYPE} from '../../';
+import { EXECUTION_EVENT , NODE_ACTION , FLOW_ACTION, TOKEN_STATUS, EXECUTION_STATUS,  ITEM_STATUS, INode, NODE_SUBTYPE} from '..';
 import { EventEmitter } from 'events';
 import { Loop } from './Loop';
 import { Item } from './Item';
@@ -14,39 +14,39 @@ import { IToken, IExecution, IItem } from '../interfaces/engine';
 /*
  *  Tokens:
  *          Start                       End                     data
- *          
+ *
  *      1 start of execution              end of execution          execution
  *      2 start of sbuexecution           end of subexecution       own (new object)
  *      3 start of multi-instances      end of instance         own (new object)
  *      4 diverging                     at converge             parent
- *      
+ *
  *  Rules:
  *      Node acts synchronisly
- *      
+ *
  *      parent token go on 'HOLD' waiting for children to finish
- *      
- *      token;  parent 
+ *
+ *      token;  parent
  *              holdingForCount   when 0 it proceeds to next node
- *              
+ *
  *   scenario 1:
  *      Event1 -> Task1->GW1 ->     task1      ->gw2            task 3
  *                                  task2      ->gw2
- *       t1         t1    t1(wait)                
+ *       t1         t1    t1(wait)
  *                                  t2          t2 end -t1 wait
  *                                  t3          t3 end -t1 go
- *                                  
+ *
  *          when t2 arrives at gw2 - it ends and t1 count--
  *          when t3 arrives at gw2 - it ends and t1 count--
  *              since count==0 t1 will proceed
- *       gw2 logic t2 is from t1- waits for t1 counter to be 
- *       
- *       
+ *       gw2 logic t2 is from t1- waits for t1 counter to be
+ *
+ *
  *       ------- Data ----
- *       
+ *
  *  execution Data execution.data
  *  nodeData
- *  
- *  
+ *
+ *
  */
 // ---------------------------------------------
 enum TOKEN_TYPE {
@@ -63,7 +63,7 @@ class Token implements IToken {
     parentToken?: Token;
 //    branchNode?: Node;
     originItem: Item;
-    path: Item[];  //  keep track of all nodes and flow taken 
+    path: Item[];  //  keep track of all nodes and flow taken
     loop: Loop;
     currentNode: Node;
     processId;
@@ -110,7 +110,7 @@ class Token implements IToken {
         if (this.parentToken)
             path=this.parentToken.getFullPath(path);
         this.path.forEach(i => { path.push(i); });
-        return path;       
+        return path;
     }
     constructor(type: TOKEN_TYPE, execution: Execution, startNode: Node, dataPath? ,parentToken?: Token, originItem?: Item) {
         this.execution = execution;
@@ -129,7 +129,7 @@ class Token implements IToken {
         this.path = [];
     }
     /**
-     * 
+     *
      * @param execution
      * @param startNode
      * @param dataPath
@@ -149,7 +149,7 @@ class Token implements IToken {
         if (noExecute==false)
             await token.execute(data);
         return token;
-    } 
+    }
     save() {
         let parentToken, originItem, loopId;
         if (this.parentToken)
@@ -179,13 +179,13 @@ class Token implements IToken {
         return token;
     }
     stop() {
-        
+
     }
     /*
-     * is fired once after the execution is resumed from restrt 
-     * 
+     * is fired once after the execution is resumed from restrt
+     *
      *  fire resume for all existing items to wakeup the timers
-     *  
+     *
      */
     resume() {
         this.currentNode.resume(this.currentItem);
@@ -215,7 +215,7 @@ class Token implements IToken {
     }
     /*
      *  is called before Node execute and before an item is created
-     *  
+     *
      */
     async preExecute() {
         // loop
@@ -232,7 +232,7 @@ class Token implements IToken {
     /**
      * this is the primary exectuion method for a token
      * Pre-Conditions:
-     *      currentNode is set 
+     *      currentNode is set
      *      status!= end
      */
     async execute(input) {
@@ -241,9 +241,9 @@ class Token implements IToken {
         if (this.status==TOKEN_STATUS.end) {
             this.log('Token(' + this.id + ').execute: token status is end: return from execute!!');
             return;
-            
+
         }
-        if (!await this.preExecute())  
+        if (!await this.preExecute())
             return; // loop logic will take care of it
 
         let ret;
@@ -255,13 +255,13 @@ class Token implements IToken {
 
         if (input)
             await this.currentNode.setInput(item,input);
-            
+
 
         this.log('Token('+this.id +').execute: executing currentNodeId='+ this.currentNode.id);
 
         ret = await this.currentNode.execute(item);
 /*
-        // check for subprocess 
+        // check for subprocess
         if (this.currentNode.type == 'bpmn:SubProcess') {
             this.log('..executing a sub process item:' + this.currentNode.id + " " + item.id + " is done");
             const subProcess = this.currentNode as SubProcess;
@@ -284,15 +284,15 @@ class Token implements IToken {
         }
         else if (ret == NODE_ACTION.abort) {
             this.execution.terminate();
-            return;     
+            return;
 
         }
         else if (ret==NODE_ACTION.end) {
             this.status = TOKEN_STATUS.end;
-            return;     
+            return;
         }
 
-        // current Node is now completed 
+        // current Node is now completed
         const result = await this.goNext();
         return result;
 
@@ -301,8 +301,8 @@ class Token implements IToken {
 
         let errorHandlerToken = null;
         // two types of error handlers
-        //  1.  eventSubProcess 
-        //  2.  boundaryEvents  
+        //  1.  eventSubProcess
+        //  2.  boundaryEvents
         let contextItem: Item = this.currentItem;
         let contextToken: Token = this;
 
@@ -331,8 +331,8 @@ class Token implements IToken {
 
         let errorHandlerToken = null;
         // two types of error handlers
-        //  1.  eventSubProcess 
-        //  2.  boundaryEvents  
+        //  1.  eventSubProcess
+        //  2.  boundaryEvents
         let contextItem: Item = this.currentItem;
         let contextToken: Token = this;
 
@@ -351,7 +351,7 @@ class Token implements IToken {
 
     }
     /**
-     * 
+     *
      *  renamed from applyInput to appendData
      * @param inputData
      */
@@ -360,7 +360,7 @@ class Token implements IToken {
     }
     /**
      *  is called by Gateways to cancel current token
-     *  
+     *
      * */
     async terminate() {
         this.log('Token('+this.id +').terminate: terminating ....');
@@ -370,7 +370,7 @@ class Token implements IToken {
     }
     /**
      *  is called by events to cancel current token
-     *  
+     *
      * */
     async continue() {
         await this.currentNode.end (this.currentItem);
@@ -379,8 +379,8 @@ class Token implements IToken {
     }
     /*
      *  is called to invoke an element like userTask, or trigger an envent or signal
-     *  
-     */ 
+     *
+     */
     async signal(data,options={}) {
         // check if valid node and valid status
         // find the item
@@ -441,13 +441,13 @@ class Token implements IToken {
     setCurrentNode(newCurrentNode:Node){
         this.log('Token('+this.id +').setCurrentNode():  newCurrentNode.id=' + newCurrentNode.id+' currentNode='+this.currentNode);
         this.currentNode = newCurrentNode;
-    
+
       }
-      
+
     /*
      *  once node is completed the token will move to next action
-     *  
-     */ 
+     *
+     */
     async goNext() {
 
         if (this.currentItem.status=='wait')
@@ -496,7 +496,7 @@ class Token implements IToken {
             if (this.type!=TOKEN_TYPE.SubProcess)
                  this.end();// causes problem for sub-process, ends subprocess prematurally
         }
-        else // single node 
+        else // single node
         {
             this.log('Token(' + this.id + ').goNext(): verify outbonds....');
             outbounds.forEach(async function (flowItem) {

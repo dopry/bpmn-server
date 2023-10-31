@@ -2,7 +2,7 @@
 import { Logger } from '../common/Logger';
 
 
-import { IConfiguration, ILogger, DataStore , IAppDelegate, IBPMNServer, IDataStore,ICacheManager,IModelsDatastore} from '../..';
+import { IConfiguration, ILogger, DataStore , IAppDelegate, IBPMNServer, IDataStore,ICacheManager,IModelsDatastore} from '..';
 import { Engine } from './Engine';
 import { CacheManager } from './CacheManager';
 import { Cron } from './Cron';
@@ -12,19 +12,19 @@ process.on('uncaughtException', function (err) {
 console.log('***************BPMNServer UNCAUGHT ERROR***********',err);
 	BPMNServer.getInstance().error=err;
 	return;
-}); 
+});
 
 
 const fs = require('fs');
 /**
  *	The main class of Server Layer
  *	provides the full functionalities:
- *	
+ *
  *		at start of the app:
  *			new BPMNServer(configuration,options);
- *			
+ *
  *		after that point:
- *		
+ *
  *			BPMNServer.engine.start(...)
  *			BPMNServer.engine.invoke(...)
  *			BPMNServer.dataStore.findInstances(...)
@@ -48,8 +48,8 @@ class BPMNServer implements IBPMNServer {
 
 	/**
 	 * Server Constructor
-	 * 
-	 * @param configuration	see 
+	 *
+	 * @param configuration	see
 	 * @param logger
 	 */
 
